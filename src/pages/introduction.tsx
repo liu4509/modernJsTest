@@ -2,6 +2,9 @@ import { Helmet } from '@modern-js/runtime/head';
 import styled from '@modern-js/runtime/styled';
 import { useState, useEffect } from 'react';
 import getData from '@api/data';
+// import { useLoader } from '@modern-js/runtime/dist/types';
+import { useLoader } from '@modern-js/runtime';
+import { NoSSR } from '@modern-js/runtime/ssr';
 
 // css in js
 const Title = styled.div`
@@ -18,17 +21,38 @@ const Item = styled.div`
 
 const Introduction = () => {
   const [data, setData] = useState<string>();
+  const [time, setTime] = useState<string>(new Date().toString());
+
+  // useEffect(() => {
+  //   const load = async () => {
+  //     // 可以像使用函数一样来调用 API
+  //     const res = await getData();
+  //     const _data = JSON.stringify(res);
+  //     setData(_data);
+  //   };
+  //   load();
+  // }, []);
+
+  // 当 SSR 的时候，服务端使用 useLoader 预加载数据
+  const { data: newData } = useLoader(async () => {
+    // 可以像使用函数一样来调用 API
+    const res = await getData();
+    return res;
+  });
 
   useEffect(() => {
-    const load = async () => {
-      // 可以像使用函数一样来调用 API
-      const res = await getData();
-      const _data = JSON.stringify(res);
-      setData(_data);
+    setData(JSON.stringify(newData));
+  }, [newData]);
+
+  useEffect(() => {
+    const timeId = setInterval(() => {
+      setTime(new Date().toString());
+    }, 1000);
+    return () => {
+      clearInterval(timeId);
     };
-    load();
   }, []);
-  console.log(data);
+
   return (
     <div>
       <Helmet>
@@ -37,6 +61,10 @@ const Introduction = () => {
       {/* Utility Class  */}
       <Title className="text-red-600">Introduction page</Title>
       {data && <Item>{data}</Item>}
+      {/* 通过 NoSSR 组件实现页面局部的 CSR */}
+      <NoSSR>
+        <div className="text-center">time: {time}</div>
+      </NoSSR>
     </div>
   );
 };

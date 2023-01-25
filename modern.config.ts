@@ -6,4 +6,8 @@ export default defineConfig({
     router: true,
     state: true,
   },
+  server: {
+    // 开启 ssr
+    ssr: true,
+  },
 });
