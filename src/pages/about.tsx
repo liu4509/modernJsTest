@@ -5,7 +5,8 @@ const About = () => (
     <Helmet>
       <title>About</title>
     </Helmet>
-    <div>About page</div>
+    {/* Utility Class  */}
+    <div className="text-center">About page</div>
   </div>
 );
 export default About;
