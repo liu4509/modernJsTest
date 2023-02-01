@@ -9,7 +9,8 @@
     "new": "modern new",
     "lint": "modern lint",
     "prepare": "husky install",
-    "upgrade": "modern upgrade"
+    "upgrade": "modern upgrade",
+    "test": "modern test"
   },
   "engines": {
     "node": ">=14.17.6"
@@ -49,6 +50,8 @@
     "@modern-js/plugin-less": "1.22.5",
     "@modern-js/plugin-sass": "1.22.5",
     "tailwindcss": "^2.2.19",
-    "@types/express": "^4.17.16"
+    "@types/express": "^4.17.16",
+    "@modern-js/plugin-testing": "1.22.5",
+    "@types/jest": "^26.0.9"
   }
 }
